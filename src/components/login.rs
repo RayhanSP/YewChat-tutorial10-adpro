@@ -27,12 +27,48 @@ pub fn login() -> Html {
     };
 
     html! {
-       <div class="bg-gray-800 flex w-screen">
-            <div class="container mx-auto flex flex-col justify-center items-center">
-                <form class="m-4 flex">
-                    <input {oninput} class="rounded-l-lg p-4 border-t mr-0 border-b border-l text-gray-800 border-gray-200 bg-white" placeholder="Username" />
-                    <Link<Route> to={Route::Chat}> <button {onclick} disabled={username.len()<1} class="px-8 rounded-r-lg bg-violet-600	  text-white font-bold p-4 uppercase border-violet-600 border-t border-b border-r" >{"Go Chatting!"}</button></Link<Route>>
-                </form>
+       <div class="login-container min-h-screen flex w-screen">
+            <div class="container mx-auto px-4 py-10 flex flex-col justify-center items-center">
+                <div class="w-full max-w-md bg-white rounded-xl shadow-lg p-8 transform transition duration-500 hover:scale-105">
+                    <div class="text-center mb-8">
+                        <h1 class="text-3xl font-bold text-indigo-600 mb-2">{"YewChat"}</h1>
+                        <p class="text-gray-600">{"Connect and chat in real-time"}</p>
+                    </div>
+                    
+                    <div class="mb-8 flex justify-center">
+                        <img src="https://avatars.dicebear.com/api/adventurer-neutral/welcome.svg" 
+                             alt="Welcome Avatar" 
+                             class="w-32 h-32 rounded-full border-4 border-indigo-200 p-1" />
+                    </div>
+                    
+                    <form class="space-y-6">
+                        <div>
+                            <label for="username" class="block text-sm font-medium text-gray-700 mb-1">{"Username"}</label>
+                            <input 
+                                id="username"
+                                {oninput} 
+                                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" 
+                                placeholder="Enter your username" 
+                            />
+                        </div>
+                        
+                        <div>
+                            <Link<Route> to={Route::Chat}>
+                                <button 
+                                    {onclick} 
+                                    disabled={username.len()<1} 
+                                    class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-bold py-3 px-4 rounded-lg hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    {"Start Chatting"}
+                                </button>
+                            </Link<Route>>
+                        </div>
+                    </form>
+                    
+                    <div class="mt-6 text-center text-sm text-gray-500">
+                        {"Enter any username to start chatting instantly"}
+                    </div>
+                </div>
             </div>
         </div>
     }

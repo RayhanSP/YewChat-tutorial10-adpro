@@ -168,22 +168,46 @@ impl Component for Chat {
                         {
                             self.messages.iter().map(|m| {
                                 let user = self.users.iter().find(|u| u.name == m.from).unwrap();
-                                html!{
-                                    <div class="flex items-end w-3/6 bg-gray-100 m-8 rounded-tl-lg rounded-tr-lg rounded-br-lg ">
-                                        <img class="w-8 h-8 rounded-full m-3" src={user.avatar.clone()} alt="avatar"/>
-                                        <div class="p-3">
-                                            <div class="text-sm">
-                                                {m.from.clone()}
+                                let (user_ctx, _) = ctx.link().context::<User>(Callback::noop()).expect("context to be set");
+                                let current_username = user_ctx.username.borrow().clone();
+                                let is_current_user = m.from == current_username;
+                                
+                                if is_current_user {
+                                    html!{
+                                        <div class="flex items-end w-3/6 bg-blue-100 m-8 rounded-tl-lg rounded-tr-lg rounded-bl-lg ml-auto mr-8">
+                                            <div class="p-3 flex-grow">
+                                                <div class="text-sm text-right">
+                                                    {m.from.clone()}
+                                                </div>
+                                                <div class="text-xs text-gray-500 text-right">
+                                                    if m.message.ends_with(".gif") {
+                                                        <img class="mt-3" src={m.message.clone()}/>
+                                                    } else {
+                                                        {m.message.clone()}
+                                                    }
+                                                </div>
                                             </div>
-                                            <div class="text-xs text-gray-500">
-                                                if m.message.ends_with(".gif") {
-                                                    <img class="mt-3" src={m.message.clone()}/>
-                                                } else {
-                                                    {m.message.clone()}
-                                                }
+                                            <img class="w-8 h-8 rounded-full m-3" src={user.avatar.clone()} alt="avatar"/>
+                                        </div>
+                                    }
+                                } else {
+                                    html!{
+                                        <div class="flex items-end w-3/6 bg-gray-100 m-8 rounded-tl-lg rounded-tr-lg rounded-br-lg">
+                                            <img class="w-8 h-8 rounded-full m-3" src={user.avatar.clone()} alt="avatar"/>
+                                            <div class="p-3">
+                                                <div class="text-sm">
+                                                    {m.from.clone()}
+                                                </div>
+                                                <div class="text-xs text-gray-500">
+                                                    if m.message.ends_with(".gif") {
+                                                        <img class="mt-3" src={m.message.clone()}/>
+                                                    } else {
+                                                        {m.message.clone()}
+                                                    }
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    }
                                 }
                             }).collect::<Html>()
                         }
